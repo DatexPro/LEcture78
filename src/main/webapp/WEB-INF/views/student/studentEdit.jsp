@@ -1,9 +1,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<h1>Student</h1>
+<h1>Create Student</h1>
 
 <form:form modelAttribute="student"
            action="${pageContext.request.contextPath}/students/save">
-    <table>
+    <table style="background-color: black; color: aliceblue">
         <tr>
             <td>First name:</td>
             <td><form:input path="firstName"/></td>
@@ -14,7 +14,7 @@
         </tr>
         <tr>
             <td>Date of birth:</td>
-            <td><form:input path="dateOfBirth"/></td>
+            <td><form:input path="birthday"/></td>
         </tr>
         <tr>
             <td>email:</td>

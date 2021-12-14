@@ -8,26 +8,19 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class StudentServiceI implements StudentService {
-
+    @Autowired
     private StudentsDao studentsDao;
 
-    @Autowired
-    public StudentServiceI(StudentsDao studentsDao) {
-        this.studentsDao = studentsDao;
-    }
-
     @Override
-    public void saveStudent(Student student) {
+    public void create(Student student) {
         studentsDao.save(student);
     }
 
     @Override
-    public List<Student> getAllStudents() {
-
+    public List<Student> readAll() {
         List<Student> allStudent = new ArrayList<>();
         Iterator<Student> studentIterator = studentsDao.findAll().iterator();
         while (studentIterator.hasNext()) {
@@ -37,30 +30,33 @@ public class StudentServiceI implements StudentService {
     }
 
     @Override
-    public List<Student> getAllStudentsByGroup(long groupId) {
+    public List<Student> readAllStudentsByGroup(Long groupId) {
         return studentsDao.getStudentByGroupID(groupId);
     }
 
 
     @Override
-    public Student getStudent(long id) {
-        Optional<Student> students = studentsDao.findById(id);
-        Student student = null;
-        if (students.isPresent()) {
-            student = students.get();
-        } else {
-            throw new RuntimeException("No record found for given id:" + id);
+    public Student read(long id) {
+        return studentsDao.getOne(id);
+    }
+
+    @Override
+    public boolean update(Student student, Long id) {
+        if (studentsDao.existsById(id)){
+            student.setId(id);
+            studentsDao.save(student);
+            return true;
         }
-        return student;
+        return false;
     }
 
     @Override
-    public Student updateStudent(Student student) {
-        return studentsDao.save(student);
+    public boolean delete(long id) {
+        if (studentsDao.existsById(id)){
+            studentsDao.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
-    @Override
-    public void deleteStudent(long id) {
-        studentsDao.deleteById(id);
-    }
 }

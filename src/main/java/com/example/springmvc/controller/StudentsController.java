@@ -16,18 +16,13 @@ import java.util.List;
 @RequestMapping("/students")
 @Controller
 public class StudentsController {
-
-    private final StudentServiceI studentsService;
-
     @Autowired
-    public StudentsController(StudentServiceI studentsService) {
-        this.studentsService = studentsService;
-    }
+    private StudentServiceI studentsService;
 
     @GetMapping(value = "/")
     @ResponseBody
     public ResponseEntity<List<Student>> read() {
-        final List<Student> students = studentsService.getAllStudents();
+        final List<Student> students = studentsService.readAll();
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
 
@@ -39,8 +34,8 @@ public class StudentsController {
     }
 
     @GetMapping("/{id}")
-    public ModelAndView viewStudent(@PathVariable("id") long id) {
-        Student student = studentsService.getStudent(id);
+    public ModelAndView viewStudent(@PathVariable("id") Long id) {
+        Student student = studentsService.read(id);
         if (student == null) {
             throw new ResourceNotFoundException();
         }
@@ -50,8 +45,8 @@ public class StudentsController {
     }
 
     @GetMapping("/{id}/edit")
-    public ModelAndView editStudent(@PathVariable("id") int id) {
-        Student student = studentsService.getStudent(id);
+    public ModelAndView editStudent(@PathVariable("id") Long id) {
+        Student student = studentsService.read(id);
 
         return new ModelAndView("student/studentEdit")
                 .addObject("student", student);
@@ -59,26 +54,28 @@ public class StudentsController {
 
     @PostMapping(value = "/delete")
     public ModelAndView delete(Student studentID) {
-        Student student = studentsService.getStudent(studentID.getId());
+        Student student = studentsService.read(studentID.getId());
         if (student == null) {
             throw new ResourceNotFoundException();
         } else {
-            studentsService.deleteStudent(studentID.getId());
+            studentsService.delete(studentID.getId());
         }
         return new ModelAndView("redirect:/students/");
     }
+
     @PostMapping("/save")
-    public String saveStudent(@Valid Student student, BindingResult bindingResult) {
+    public String saveStudent(@Valid Student student, BindingResult bindingResult, Long id) {
         if (bindingResult.hasErrors()) {
             return "redirect:/students/";
         }
         if (student.getId() != null) {
-            studentsService.updateStudent(student);
+            studentsService.update(student, id);
         } else {
-            studentsService.saveStudent(student);
+            studentsService.create(student);
         }
         return "redirect:/students/" + student.getId();
     }
+
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public class ResourceNotFoundException extends RuntimeException {
     }

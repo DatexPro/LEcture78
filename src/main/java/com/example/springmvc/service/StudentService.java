@@ -6,42 +6,15 @@ import java.util.List;
 
 public interface StudentService {
 
-    /**
-     * Создает нового студента
-     * @param student - студент для создания
-     */
-    void saveStudent(Student student);
+    void create(Student student);
 
-    /**
-     * Возвращает список всех имеющихся студентов
-     * @return список студентов
-     */
-    List<Student> getAllStudents();
+    List<Student> readAll();
 
-    /**
-     * Возвращает список всех студентов относящихся к группе
-     * @return список студентов относящихся к группе
-     */
-    List<Student> getAllStudentsByGroup(long groupId);
+    List<Student> readAllStudentsByGroup(Long groupId);
 
-    /**
-     * Возвращает студента по его ID
-     * @param id - ID студента
-     * @return - объект студента с заданным ID
-     */
-    Student getStudent(long id);
+    Student read(long id);
 
-    /**
-     * Обновляет или добавляет студента с заданным ID,
-     * в соответствии с переданным студентом
-     * @param student - студент в соответсвии с которым нужно обновить данные
-     * @return - true если студент был обновлён, иначе false
-     */
-    Student updateStudent(Student student);
+    boolean update(Student student, Long id);
 
-    /**
-     * Удаляет студента с заданным ID
-     * @param id - id студента, которого нужно удалить
-     */
-    void deleteStudent(long id);
+    boolean delete(long id);
 }

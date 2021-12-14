@@ -12,21 +12,16 @@ import java.util.Optional;
 
 @Service
 public class GroupsServiceImpl implements GroupsService {
-
+    @Autowired
     private GroupsDao studentGroupsDao;
 
-    @Autowired
-    public GroupsServiceImpl(GroupsDao studentGroupsDao) {
-        this.studentGroupsDao = studentGroupsDao;
-    }
-
     @Override
-    public void saveStudentGroup(StudentGroup group) {
+    public void create(StudentGroup group) {
         studentGroupsDao.save(group);
     }
 
     @Override
-    public List<StudentGroup> getAllStudentGroups() {
+    public List<StudentGroup> readAll() {
         List<StudentGroup> allGroup = new ArrayList<>();
         Iterator<StudentGroup> studentGroupIterator = studentGroupsDao.findAll().iterator();
         while (studentGroupIterator.hasNext()){
@@ -36,28 +31,32 @@ public class GroupsServiceImpl implements GroupsService {
     }
 
     @Override
-    public StudentGroup getStudentGroup(long id) {
+    public StudentGroup read(Long id) {
         Optional<StudentGroup> studentGroup = studentGroupsDao.findById(id);
         StudentGroup group = null;
         if (studentGroup.isPresent()){
             group = studentGroup.get();
-        }else {
-            throw new RuntimeException("No record found for given id:"+id);
         }
         return group;
     }
 
     @Override
-    public StudentGroup updateStudentGroup(StudentGroup group) {
-        return studentGroupsDao.save(group);
+    public boolean update(StudentGroup group, Long id) {
+        if (studentGroupsDao.existsById(id)){
+            group.setId(id);
+            studentGroupsDao.save(group);
+            return true;
+        }
+        return false;
     }
+
 
     @Override
-    public void deleteStudentGroup(long id) {
-
-    }
-
-    public void deleteStudentGroup(Long id) {
-        studentGroupsDao.deleteById(id);
+    public boolean delete(long id) {
+        if (studentGroupsDao.existsById(id)) {
+            studentGroupsDao.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }

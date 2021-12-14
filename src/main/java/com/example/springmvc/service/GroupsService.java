@@ -3,18 +3,17 @@ package com.example.springmvc.service;
 import com.example.springmvc.model.StudentGroup;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface GroupsService {
 
 
-    void saveStudentGroup(StudentGroup group);
+    void create(StudentGroup group);
 
-    List<StudentGroup> getAllStudentGroups();
+    List<StudentGroup> readAll();
 
-    StudentGroup getStudentGroup(long id);
+    StudentGroup read(Long id);
 
-    StudentGroup updateStudentGroup(StudentGroup group);
+    boolean update(StudentGroup group, Long id);
 
-    void deleteStudentGroup(long id);
+    boolean delete(long id);
 }

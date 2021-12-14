@@ -1,22 +1,22 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<h1>Student</h1>
+<h1>Edit Student</h1>
 
-<table>
+<table style="background-color: darkblue; color: chartreuse">
     <tr>
         <td>ID:</td>
         <td>${student.id}</td>
     </tr>
     <tr>
-        <td>First name:</td>
+        <td>Name:</td>
         <td>${student.firstName}</td>
     </tr>
     <tr>
-        <td>Last name:</td>
+        <td>Surname:</td>
         <td>${student.lastName}</td>
     </tr>
     <tr>
         <td>Date of birth:</td>
-        <td>${student.dateOfBirth}</td>
+        <td>${student.birthday}</td>
     </tr>
     <tr>
         <td>Email:</td>
@@ -27,7 +27,7 @@
         <td>${student.phone}</td>
     </tr>
     <tr>
-        <td>GroupID:</td>
+        <td>Group ID:</td>
         <td>${student.groupID}</td>
     </tr>
     <tr>
